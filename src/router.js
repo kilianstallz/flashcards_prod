@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Dashboard from './views/Dashboard.vue'
+
+// Pages
+import Home from './pages/Home.vue'
 
 Vue.use(Router)
 
@@ -9,9 +12,29 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '*',
+      redirect: '/dashboard'
+    },
+    {
+      path: '/login',
+      component: () => import(/* webpackChunkName: "AuthPage" */ './views/Auth.vue')
+    },
+    {
+      path: '/welcome',
+      name: 'welcome',
+      component: () => import(/* webpackChunkName: "WelcomeSetup" */ './views/Welcome.vue')
+    },
+    {
       path: '/',
+      redirect: '/dashboard',
       name: 'home',
-      component: Home
+      component: Dashboard,
+      children: [
+        {
+          path: '/dashboard',
+          component: Home
+        }
+      ]
     },
     {
       path: '/about',
