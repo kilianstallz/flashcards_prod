@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <md-app md-waterfall md-mode="fixed">
+    <md-app md-waterfall md-mode="fixed" style="height: 100vh;">
       <md-app-toolbar class="md-large md-dense md-primary">
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
@@ -8,7 +8,7 @@
               <md-icon>menu</md-icon>
             </md-button>
 
-            <span class="md-title">My Title</span>
+            <span class="md-title">{{ $route.name }}</span>
           </div>
 
           <div class="md-toolbar-section-end">
@@ -50,6 +50,11 @@
             <md-icon>error</md-icon>
             <span class="md-list-item-text">Spam</span>
           </md-list-item>
+
+          <md-list-item @click="logout">
+            <md-icon>logout</md-icon>
+            <span class="md-list-item-text md-color-red">Log Out</span>
+          </md-list-item>
         </md-list>
       </md-app-drawer>
 
@@ -75,6 +80,10 @@ export default {
   methods: {
     setTab (tab) {
       this.$store.dispatch('switchTab', tab)
+    },
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
     }
   }
 }

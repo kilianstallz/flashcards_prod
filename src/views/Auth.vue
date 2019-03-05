@@ -17,19 +17,19 @@
                 <div class="md-layout-item md-small-size-100">
                   <md-field>
                     <label for="email">Email</label>
-                    <md-input name="email" id="email" v-model="form.email" :disabled="sending"></md-input>
+                    <md-input name="email" id="email" type="email" v-model="form.email" :disabled="sending"></md-input>
                   </md-field>
                   <md-field>
                     <label for="password">Password</label>
-                    <md-input name="password" id="password" v-model="form.password" :disabled="sending"></md-input>
+                    <md-input name="password" id="password" type="password" v-model="form.password" :disabled="sending"></md-input>
                   </md-field>
                 </div>
               </md-card-content>
 
-              <md-progress-bar md-mode="indetermiate" v-if="sending"></md-progress-bar>
+              <md-progress-spinner md-mode="indeterminate" v-if="sending"></md-progress-spinner>
 
               <md-card-actions>
-                <md-button type="submit" class="md-primary" :disabled="sending">Log In</md-button>
+                <md-button type="submit" class="md-primary" @click="login" :disabled="sending">Log In</md-button>
               </md-card-actions>
             </md-card>
 
@@ -51,19 +51,19 @@
                   </md-field>
                   <md-field>
                     <label for="email">Email</label>
-                    <md-input name="email" id="email" v-model="form.email" :disabled="sending"></md-input>
+                    <md-input name="email" type="email" id="email" v-model="form.email" :disabled="sending"></md-input>
                   </md-field>
                   <md-field>
                     <label for="password">Password</label>
-                    <md-input name="password" id="password" v-model="form.password" :disabled="sending"></md-input>
+                    <md-input name="password" type="password" id="password" v-model="form.password" :disabled="sending"></md-input>
                   </md-field>
                 </div>
               </md-card-content>
 
-              <md-progress-bar md-mode="indetermiate" v-if="sending"></md-progress-bar>
+              <md-progress-spinner md-mode="indeterminate" v-if="sending"></md-progress-spinner>
 
               <md-card-actions>
-                <md-button type="submit" class="md-primary" :disabled="sending">Register</md-button>
+                <md-button type="submit" class="md-primary" @click="register" :disabled="sending">Register</md-button>
               </md-card-actions>
             </md-card>
 
@@ -76,13 +76,9 @@
 </template>
 
 <script>
-// import { validationMixin } from 'vuelidate'
-// import {
-//   required,
-//   email,
-//   minLength,
-//   maxLength
-// } from 'vuelidate/lib/validators'
+import router from '../router'
+const fb = require('../db/firebaseConfig')
+
 export default {
   name: 'Auth',
   data: () => ({
@@ -97,9 +93,41 @@ export default {
     lastUser: null
   }),
   methods: {
-    login () {},
+    async login () {
+      fb.auth.signInWithEmailAndPassword(this.form.email, this.form.password)
+        .then(user => {
+          this.sending = true
+          this.$store.commit('SET_CURRENT_USER', user.user)
+          this.$store.dispatch('fetchUserProfile')
+          console.log('Auth.vue: loggedIn')
+        })
+        .then(user => {
+          const firstTimeSignUp = fb.usersCollection.doc(fb.currentUser.uid)
+          this.$store.state.firstTimeSignUp = firstTimeSignUp
+          this.$store.state.firstTimeSignUp ? this.welcomeSetup() : this.redirect()
+        })
+        .catch(err => {
+          console.log(err)
+          this.userSaved = false
+          this.sending = false
+        })
+    },
     register () {
       console.log(this.form)
+    },
+    welcomeSetup () {
+      console.log('welcomeSetup')
+      this.$router.replace('/profile/welcome')
+    },
+    redirect () {
+      console.log('push')
+      this.userSaved = true
+      this.$route.query.redirect ? router.push(this.$route.query.redirect) : router.replace('/dashboard')
+    }
+  },
+  computed: {
+    isLoggedIn () {
+      return !(!fb.auth.currentUser)
     }
   }
 }
