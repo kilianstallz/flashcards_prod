@@ -102,7 +102,7 @@ export default {
           console.log('Auth.vue: loggedIn')
         })
         .then(user => {
-          const firstTimeSignUp = fb.usersCollection.doc(fb.currentUser.uid)
+          const firstTimeSignUp = fb.usersCollection.doc(fb.currentUser.uid) || false
           this.$store.state.firstTimeSignUp = firstTimeSignUp
           this.$store.state.firstTimeSignUp ? this.welcomeSetup() : this.redirect()
         })
