@@ -102,9 +102,10 @@ export default {
           console.log('Auth.vue: loggedIn')
         })
         .then(user => {
-          const firstTimeSignUp = true
-          this.$store.state.firstTimeSignUp = firstTimeSignUp
-          this.$store.state.firstTimeSignUp ? this.welcomeSetup() : this.redirect()
+          // const firstTimeSignUp = true
+          // this.$store.state.firstTimeSignUp = firstTimeSignUp
+          // this.$store.state.firstTimeSignUp ? this.welcomeSetup() : this.redirect()
+          this.redirect()
         })
         .catch(err => {
           console.log(err)
