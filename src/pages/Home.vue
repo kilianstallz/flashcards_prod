@@ -1,17 +1,18 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
     <transition-group>
-      <div v-for="array in cardsArray" :key="array">
-        {{ array }}
-      </div>
+      <Card v-for="array in cardsArray" :key="array.id" :deck="array"/>
     </transition-group>
   </div>
 </template>
 
 <script>
+import Card from '@/components/Card.vue'
 export default {
   name: 'Home',
+  components: {
+    Card
+  },
   data () {
     return {
       cardsArray1: ['1', '2', '3'],
@@ -24,10 +25,11 @@ export default {
       return this.$store.getters['currentTab']
     },
     cardsArray () {
-      if (this.currentTab === 2) return this.cardsArray2
-      if (this.currentTab === 3) return this.cardsArray3
-      else return this.cardsArray1
+      return this.$store.getters.sortedDecks
     }
+  },
+  created () {
+    this.$store.dispatch('fetchDecks')
   }
 }
 </script>

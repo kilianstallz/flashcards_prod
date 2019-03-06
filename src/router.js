@@ -74,14 +74,16 @@ router.beforeEach((to, from, next) => {
   const onlyWhenLoggedOut = to.matched.some(
     record => record.meta.onlyWhenLoggedOut
   )
+  console.log('routerAuthState: ', (isLoggedIn))
+  console.log('storedState ', (!store.getters.currentUser || !store.getters.userProfile))
   // set user Data on page refresh
-  if (isLoggedIn && !(store.state.currentUser || store.state.userProfile)) {
+  if (isLoggedIn && (!store.getters.currentUser || !store.getters.userProfile)) {
     store.commit('SET_CURRENT_USER', isLoggedIn)
     store.dispatch('fetchUserProfile')
   }
   // check LogginStatus
   // page needs auth
-  if (!isLoggedIn & authRequired) {
+  if (!(isLoggedIn) & authRequired) {
     next({
       path: '/login',
       query: {

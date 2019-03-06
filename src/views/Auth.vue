@@ -97,8 +97,8 @@ export default {
       fb.auth.signInWithEmailAndPassword(this.form.email, this.form.password)
         .then(user => {
           this.sending = true
-          this.$store.commit('SET_CURRENT_USER', user.user)
-          this.$store.dispatch('fetchUserProfile')
+          this.$store.User.commit('SET_CURRENT_USER', user.user)
+          this.$store.User.dispatch('fetchUserProfile')
           console.log('Auth.vue: loggedIn')
         })
         .then(user => {

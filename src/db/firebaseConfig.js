@@ -3,12 +3,12 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 const config = {
-  apiKey: 'AIzaSyDYexeb3IlQrJDP07F9JfArIrxCcEYJUNI',
-  authDomain: 'team-admin.firebaseapp.com',
-  databaseURL: 'https://team-admin.firebaseio.com',
-  projectId: 'team-admin',
-  storageBucket: 'team-admin.appspot.com',
-  messagingSenderId: '787016448448'
+  apiKey: 'AIzaSyDEg6KepP-GTz7rtfDr4TmlGWTJJnPZk_I',
+  authDomain: 'flashcards-5bcb1.firebaseapp.com',
+  databaseURL: 'https://flashcards-5bcb1.firebaseio.com',
+  projectId: 'flashcards-5bcb1',
+  storageBucket: 'flashcards-5bcb1.appspot.com',
+  messagingSenderId: '498617502369'
 }
 firebase.initializeApp(config)
 
@@ -18,8 +18,8 @@ const auth = firebase.auth()
 const currentUser = auth.currentUser
 
 // Collections
-const usersCollection = db.collection('Users')
-const decksCollection = db.collection('Decks')
+const usersCollection = db.collection('user')
+const decksCollection = db.collection('decks')
 
 export {
   db,
