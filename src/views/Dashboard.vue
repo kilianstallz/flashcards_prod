@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <md-app md-waterfall md-mode="fixed" style="height: 100vh;">
-      <md-app-toolbar class="md-large md-dense md-primary">
+      <md-app-toolbar class="md-large md-dense md-primary" style="z-index: 100001;">
         <div class="md-toolbar-row">
           <div class="md-toolbar-section-start">
             <md-button class="md-icon-button" @click="menuVisible = !menuVisible">

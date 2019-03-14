@@ -1,6 +1,9 @@
 <template>
   <div class="home">
     <transition-group>
+      <div class="center" key="spinner" v-if="isLoading">
+        <md-progress-spinner class="spinner" md-mode="indeterminate"></md-progress-spinner>
+      </div>
       <Card v-for="array in cardsArray" :key="array.id" :deck="array"/>
     </transition-group>
   </div>
@@ -13,19 +16,16 @@ export default {
   components: {
     Card
   },
-  data () {
-    return {
-      cardsArray1: ['1', '2', '3'],
-      cardsArray2: ['4', '5', '6'],
-      cardsArray3: ['7', '8', '9']
-    }
-  },
+  data: () => ({}),
   computed: {
     currentTab () {
       return this.$store.getters['currentTab']
     },
     cardsArray () {
       return this.$store.getters.sortedDecks
+    },
+    isLoading () {
+      return this.$store.getters.contentLoading
     }
   },
   created () {
@@ -35,4 +35,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.center {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 </style>

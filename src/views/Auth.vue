@@ -113,8 +113,31 @@ export default {
           this.sending = false
         })
     },
-    register () {
-      console.log(this.form)
+    async register () {
+      fb.auth.createUserWithEmailAndPassword(this.form.email, this.form.password)
+        .then(user => {
+          this.sending = true
+          this.$store.commit('SET_CURRENT_USER', user.user)
+          fb.usersCollection
+            .doc(user.user.uid)
+            .set({
+              name: this.form.name,
+              email: this.form.email,
+              createdOn: new Date()
+            }).then(() => {
+              this.$store.dispatch('fetchUserProfile')
+              this.redirect()
+            })
+            .catch(err => {
+              console.error(err)
+            })
+          console.log('Auth.vue: loggedIn')
+        })
+        .catch(err => {
+          console.log(err)
+          this.userSaved = false
+          this.sending = false
+        })
     },
     welcomeSetup () {
       console.log('welcomeSetup')
